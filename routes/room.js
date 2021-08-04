@@ -33,16 +33,17 @@ router.post("/enterroom", async (req, res) => {
     userName: req.body.userName,
     roomId: req.body.roomId,
   });
-  // let roomDetail = await roomlists.find({ _id: req.body.roomId });
-  // addUser.save().then((user) => {
-  //   res.status(200).json({
-  //     success: true,
-  //     data: {
-  //       user,
-  //       roomName: roomDetail[0].roomName,
-  //     },
-  //   });
-  // });
+  //let roomDetail = await roomlists.find({ _id: req.body.roomId });
+  addUser.save().then((user) => {
+    res.status(200).json({
+      success: true,
+      data: {
+        userName,
+        // user,
+        // roomName: roomDetail[0].roomName,
+      },
+    });
+  });
 });
 
 router.post("/sendmessage", async (req, res) => {
