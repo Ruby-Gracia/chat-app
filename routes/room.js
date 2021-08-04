@@ -61,6 +61,7 @@ router.post("/sendmessage", async (req, res) => {
 
 router.get("/messageshistory/:id", async (req, res) => {
   await Message.find({ roomId: req.params.id })
+    .sort({ createdAt: 1 })
     .populate([
       {
         path: "roomId",
