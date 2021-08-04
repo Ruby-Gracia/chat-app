@@ -82,7 +82,7 @@ router.get("/messageshistory/:id", async (req, res) => {
     });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("exitroom/:id", async (req, res) => {
   const user = await User.findByIdAndRemove(req.params.id);
 
   res.status(200).json({
