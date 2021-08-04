@@ -38,9 +38,8 @@ router.post("/enterroom", async (req, res) => {
     res.status(200).json({
       success: true,
       data: {
-        userName,
-        // user,
-        // roomName: roomDetail[0].roomName,
+        user,
+        //roomName: roomDetail[0].roomName,
       },
     });
   });
