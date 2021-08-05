@@ -46,7 +46,7 @@ router.post("/enterroom", async (req, res) => {
       });
     });
   } else {
-    res.status(200).json({
+    res.status(500).json({
       success: false,
       data: null,
     });
