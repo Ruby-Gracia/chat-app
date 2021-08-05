@@ -29,20 +29,28 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/enterroom", async (req, res) => {
-  const addUser = await new User({
-    userName: req.body.userName,
-    roomId: req.body.roomId,
-  });
-  let roomDetail = await roomlists.find({ _id: req.body.roomId });
-  addUser.save().then((user) => {
-    res.status(200).json({
-      success: true,
-      data: {
-        user,
-        roomName: roomDetail[0].roomName,
-      },
+  const roomId = req.body.roomId;
+  if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
+    const addUser = await new User({
+      userName: req.body.userName,
+      roomId: req.body.roomId,
     });
-  });
+    let roomDetail = await roomlists.find({ _id: req.body.roomId });
+    addUser.save().then((user) => {
+      res.status(200).json({
+        success: true,
+        data: {
+          user,
+          roomName: roomDetail[0].roomName,
+        },
+      });
+    });
+  } else {
+    res.status(200).json({
+      success: false,
+      data: null,
+    });
+  }
 });
 
 router.post("/sendmessage", async (req, res) => {
