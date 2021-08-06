@@ -40,7 +40,7 @@ app.use("/rooms", room);
 const botName = "ChatCord Bot";
 
 const db =
-  "mongodb+srv://chat-user:16ec007@cluster0.2b4qw.mongodb.net/chatApp?retryWrites=true&w=majority";
+  "mongodb+srv://chat-user:chat123@cluster0.2b4qw.mongodb.net/chatApp?retryWrites=true&w=majority";
 
 mongoose.connect(db, {
   useUnifiedTopology: true,
