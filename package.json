@@ -17,6 +17,8 @@
     "mongodb": "^4.0.1",
     "mongoose": "^5.13.3",
     "socket.io": "^2.4.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3",
     "winston-mongodb": "^5.0.7"
   },
