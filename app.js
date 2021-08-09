@@ -5,9 +5,17 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerApiDocs = require("./swagger");
+const jsDoc = swaggerJsDoc(swaggerApiDocs);
+
+app.use("/swagger", swaggerUI.serve, swaggerUI.setup(jsDoc));
+
 const room = require("./routes/room");
 
 const allowedOrigins = [
+  "http://localhost:5000/",
   "http://localhost:3000/",
   "http://localhost:3001/",
   "https://uberchat2021.herokuapp.com/",
@@ -26,7 +34,10 @@ app.use(
 app.use(function (req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+  );
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept",
@@ -56,7 +67,7 @@ mongoose.connection.once("open", () => {
   console.log("MongoDB Connected!");
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

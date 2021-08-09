@@ -4,6 +4,35 @@ const User = require("../models/User");
 const Message = require("../models/Message");
 var mongo = require("mongodb");
 
+/**
+ * @swagger
+ * /rooms/createroom:
+ *  post:
+ *    summary: Create Room
+ *    description: Create a new room
+ *    parameters:
+ *      - name: name
+ *        in: body
+ *        type: string
+ *        required: true
+ *    responses:
+ *      '200':
+ *        description: Will get newly added room
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                _id:
+ *                  type: string
+ *                  description: id of room
+ *                  example: 2342ddasa
+ *                name:
+ *                  type: string
+ *                  description: name of room
+ *                  example: Room 1
+ */
+
 router.post("/createroom", async (req, res) => {
   const addRoom = await new roomlists({
     roomName: req.body.roomName,
@@ -16,6 +45,29 @@ router.post("/createroom", async (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /rooms:
+ *  get:
+ *    summary: Get Rooms
+ *    description: Get all rooms
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              properties:
+ *              - _id:
+ *                  type: string
+ *                  description: id of room
+ *                  example: 2342ddasa
+ *                roomName:
+ *                  type: string
+ *                  description: name of room
+ *                  example: Room 1
+ */
+
 router.get("/", async (req, res) => {
   await roomlists.find({}, (error, rooms) => {
     if (error) {
@@ -27,6 +79,48 @@ router.get("/", async (req, res) => {
     });
   });
 });
+
+/**
+ * @swagger
+ * /rooms/enterroom:
+ *  post:
+ *    summary: Enter Room
+ *    description: Enter into a room
+ *    parameters:
+ *      - in: body
+ *        name: user
+ *        description: The room to enter.
+ *        schema:
+ *          type: object
+ *          required:
+ *            - userName
+ *            - roomId
+ *          properties:
+ *            userName:
+ *              type: string
+ *            roomId:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description: Will enter a room
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                _id:
+ *                  type: string
+ *                  description: id of room
+ *                  example: 2342ddasa
+ *                userName:
+ *                  type: string
+ *                  description: name of user
+ *                  example: Ruby
+ *                roomId:
+ *                  type: string
+ *                  description: Room Id
+ *                  example: 2342ddasa
+ */
 
 router.post("/enterroom", async (req, res) => {
   const roomId = req.body.roomId;
@@ -53,6 +147,54 @@ router.post("/enterroom", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /rooms/sendmessage:
+ *  post:
+ *    summary: Send Message
+ *    description: send a message
+ *    parameters:
+ *      - in: body
+ *        name: user
+ *        description: send message in a room.
+ *        schema:
+ *          type: object
+ *          required:
+ *            - userName
+ *            - roomId
+ *          properties:
+ *            roomId:
+ *              type: string
+ *            userId:
+ *              type: string
+ *            message:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description: user will send a Message
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                _id:
+ *                  type: string
+ *                  description: id of room
+ *                  example: 2342ddasa
+ *                roomId:
+ *                  type: string
+ *                  description: Room Id
+ *                  example: 2342ddasa
+ *                userId:
+ *                  type: string
+ *                  description: user Id
+ *                  example: 2342ddasa
+ *                message:
+ *                  type: string
+ *                  description: message sent by user
+ *                  example: Hello
+ */
+
 router.post("/sendmessage", async (req, res) => {
   const sendMessage = await new Message({
     roomId: req.body.roomId,
@@ -66,6 +208,32 @@ router.post("/sendmessage", async (req, res) => {
     });
   });
 });
+
+/**
+ * @swagger
+ * /rooms/messageshistory/{roomId}:
+ *  get:
+ *    summary: Get Messages History
+ *    description: Get Messages History of a Room
+ *    parameters:
+ *      - in: path
+ *        name: roomId
+ *        schema:
+ *          type: string
+ *          required: true
+ *          description: Numeric ID of the room
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              properties:
+ *              - _id:
+ *                  type: string
+ *                  description: id of room
+ *                  example: 2342ddasa
+ */
 
 router.get("/messageshistory/:id", async (req, res) => {
   await Message.find({ roomId: req.params.id })
@@ -90,6 +258,32 @@ router.get("/messageshistory/:id", async (req, res) => {
       });
     });
 });
+
+/**
+ * @swagger
+ * /rooms/{userId}:
+ *  delete:
+ *    summary: Logout
+ *    description: Logout from a room
+ *    parameters:
+ *      - in: path
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          required: true
+ *          description: Numeric ID of the user to logout
+ *    responses:
+ *      '200':
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              properties:
+ *              - _id:
+ *                  type: string
+ *                  description: id of user
+ *                  example: 2342ddasa
+ */
 
 router.delete("/:id", async (req, res) => {
   const user = await User.findByIdAndRemove(req.params.id);
